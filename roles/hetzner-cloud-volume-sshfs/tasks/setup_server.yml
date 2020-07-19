@@ -1,0 +1,23 @@
+---
+- name: Update system
+  package:
+    name: "*"
+    update_cache: yes
+    state: latest
+  register: system_updated
+
+- name: Reboot
+  reboot:
+  when: system_updated is changed
+
+- name: Install essential packages
+  apt:
+    pkg:
+    - acl
+    - curl
+    - htop
+    - make
+    - python-setuptools
+    - unzip
+    - vim
+    - wget

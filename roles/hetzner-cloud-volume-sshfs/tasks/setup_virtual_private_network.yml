@@ -1,0 +1,23 @@
+---
+- name: Remove hc-utils
+  apt:
+    name: hc-utils
+    state: absent
+
+- name: Create 61-my-private-network.cfg for manual setup of the virtual private network
+  file:
+    path: /etc/network/interfaces.d/61-my-private-network.cfg
+    state: touch
+    owner: root
+    group: root
+
+- name: Insert the network interface into 61-my-private-network.cfg
+  template:
+    src: 61-my-private-network.cfg.j2
+    dest: /etc/network/interfaces.d/61-my-private-network.cfg
+  notify: Restart networking
+
+- name: Restart networking
+  service:
+    name: "networking"
+    state: restarted

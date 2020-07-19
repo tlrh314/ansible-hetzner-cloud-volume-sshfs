@@ -1,0 +1,8 @@
+---
+- name: Node provisioning for all servers
+  hosts: all
+  strategy: free
+  remote_user: "root"
+  roles:
+    - role: hetzner-cloud-volume-sshfs
+      tags: sshfs

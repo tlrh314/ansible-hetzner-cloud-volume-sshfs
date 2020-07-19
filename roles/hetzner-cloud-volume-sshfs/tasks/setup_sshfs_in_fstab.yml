@@ -1,0 +1,5 @@
+---
+- name: Install sshfs
+  apt:
+    pkg:
+    - sshfs

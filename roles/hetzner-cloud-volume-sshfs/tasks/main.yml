@@ -1,0 +1,5 @@
+---
+- import_tasks: setup_server.yml
+- import_tasks: setup_virtual_private_network.yml
+- import_tasks: setup_ssh_keys_and_config.yml
+- import_tasks: setup_sshfs_in_fstab.yml

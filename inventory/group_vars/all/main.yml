@@ -1,0 +1,9 @@
+---
+hcloud_token: "{{ lookup('env', 'HCLOUD_TOKEN') }}"
+
+# TODO: hardcoded global variables.. not elegant.
+servers:
+  - name: server1
+    ip: 10.0.0.2
+  - name: server2
+    ip: 10.0.0.3

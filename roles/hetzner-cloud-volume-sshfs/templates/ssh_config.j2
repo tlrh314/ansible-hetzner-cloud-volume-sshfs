@@ -1,0 +1,10 @@
+{% for server in servers %}
+Host {{ server.name }}
+HostName {{ server.ip }}
+Port 22
+User root
+IdentityFile ~/.ssh/id_rsa
+IdentitiesOnly yes
+LogLevel QUIET
+
+{% endfor %}

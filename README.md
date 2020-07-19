@@ -51,18 +51,6 @@ Also see [hcloud README/Getting Started](https://github.com/hetznercloud/cli#get
     pip install ansible hcloud
     ```
 
-- Add the following to `~/.secrets/ansible-vault-pass`
-    
-    ```bash
-    SuperSecretAnsibleVaultPassword
-    ```
-
-- Execute the command `ansible-vault create inventory/group_vars/all/vault.yml`, and add the following:
-    ```bash
-    user_password: SuperSecretDebianUserPassword
-    ```
-
-
 - We need to export the following shell variables for the Ansible hcloud plugin to automatically get the servers to provision from the `hcloud` cli interface.
     ```bash
     export HCLOUD_CONTEXT=myproject
@@ -74,5 +62,6 @@ Also see [hcloud README/Getting Started](https://github.com/hetznercloud/cli#get
 
 - Create the setup at Hetzner Cloud: `./create.sh -c`
 - Run the playbook: `ansible-playbook provision.yml`
-- Connect to server: `ssh root@$(hcloud server ip server1) -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no`
+- Connect to server1: `ssh root@$(hcloud server ip server1) -i ~/.ssh/hcloud_sshfs_rsa -o StrictHostKeyChecking=no`
+- Connect to server2: `ssh root@$(hcloud server ip server2) -i ~/.ssh/hcloud_sshfs_rsa -o StrictHostKeyChecking=no`
 - Destroy the setup at Hetzner Cloud: `./create.sh -d`
