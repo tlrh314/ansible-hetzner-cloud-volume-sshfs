@@ -12,7 +12,7 @@ create_key() {
     hcloud ssh-key create --public-key-from-file="${KEY}".pub --name my-ssh-key
 }
 delete_key() {
-    hcloud ssh-key delete my-ssh-key
+    hcloud ssh-key delete my-ssh-key || true
 }
 
 
@@ -21,7 +21,7 @@ create_network() {
     hcloud network add-subnet network --type server --network-zone eu-central --ip-range 10.0.0.0/28
 }
 delete_network() {
-    hcloud network delete network
+    hcloud network delete network || true
 }
 
 
@@ -30,16 +30,16 @@ create_servers() {
     hcloud server create --location nbg1 --ssh-key my-ssh-key --type cx11 --image debian-10 --network network --name server2
 }
 delete_servers() {
-    hcloud server delete server1
-    hcloud server delete server2
+    hcloud server delete server1 || true
+    hcloud server delete server2 || true
 }
 
 create_volume() {
     hcloud volume create --size 10 --name storage --server server1 --format ext4 --automount
 }
 delete_volume() {
-    hcloud volume detach storage
-    hcloud volume delete storage
+    hcloud volume detach storage || true
+    hcloud volume delete storage || true
 }
 
 
