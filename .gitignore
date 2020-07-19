@@ -92,3 +92,4 @@ tags
 
 ### Ansible template
 *.retry
+.venv
