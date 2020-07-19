@@ -63,6 +63,13 @@ Also see [hcloud README/Getting Started](https://github.com/hetznercloud/cli#get
     ```
 
 
+- We need to export the following shell variables for the Ansible hcloud plugin to automatically get the servers to provision from the `hcloud` cli interface.
+    ```bash
+    export HCLOUD_CONTEXT=myproject
+    export HCLOUD_TOKEN=mytoken
+    ```
+
+
 ## Usage
 
 - Create the setup at Hetzner Cloud: `./create.sh -c`
