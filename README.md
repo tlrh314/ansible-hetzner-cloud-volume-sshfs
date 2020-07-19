@@ -34,10 +34,11 @@ If you haven't already, first create a project `<myproject>` in your [Hetzner Cl
 source <(hcloud completion bash)   # if you want command completion - trust me, you do!
 hcloud context create myproject
 hcloud context list
-hcloud context activate myproject  # only if it isn't active just yet
+hcloud context use myproject  # only if it isn't active just yet
+hcloud context active  # should be myproject
 ```
 
-Also see [hcloud README/Getting Started](https://github.com/hetznercloud/cli#getting-started). Note that `hcloud context create` stores the API token in `~/.config/hcloud/cli.toml`. This confused me at first because the [hcloud/cli README](https://github.com/hetznercloud/cli#configure-hcloud-using-environment-variables) suggests that the context and token are taken from the environment variable `HCLOUD_CONTEXT` and `HCLOUD_TOKEN`, respectively. However, the shell variables seem to be ignored in favour of  `~/.config/hcloud/cli.toml`.
+Also see [hcloud README/Getting Started](https://github.com/hetznercloud/cli#getting-started). Note that `hcloud context create` stores the API token in `~/.config/hcloud/cli.toml`. 
 
 
 ### For `ansible`
