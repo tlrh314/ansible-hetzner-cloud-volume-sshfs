@@ -1,1 +1,97 @@
 ---
+- name: Allow root SSH access
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin yes"
+    state: present
+  notify: Restart sshd
+
+- name: Disallow password authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+    state: present
+  notify: Restart sshd
+
+- name: Allow pubkey authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PubkeyAuthentication"
+    line: "PubkeyAuthentication yes"
+    state: present
+  notify: Restart sshd
+
+- name: Restart sshd
+  service:
+    name: "sshd"
+    state: restarted
+
+- name: Ensure /root/.ssh exists
+  file:
+    path: "/root/.ssh"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Ensure /root/.ssh/config exists
+  file:
+    path: "/root/.ssh/config"
+    state: touch
+    owner: root
+    group: root
+    mode: 0644
+  when: "'server2' in inventory_hostname"
+
+- name: Insert the network interface into 61-my-private-network.cfg
+  template:
+    src: ssh_config.j2
+    dest: /root/.ssh/config
+  when: "'server2' in inventory_hostname"
+
+- name: Ensure /root/.ssh/authorized_keys exists
+  file:
+    path: "/root/.ssh/authorized_keys"
+    state: touch
+    owner: root
+    group: root
+    mode: 0644
+  when: "'server1' in inventory_hostname"
+
+- name: Create /root/.ssh/id_rsa on server2
+  openssh_keypair:
+    group: root
+    owner: root
+    path: /root/.ssh/id_rsa
+    size: 4096
+    comment: "{{ ansible_hostname }} --> server1"
+  when: "'server2' in inventory_hostname"
+
+# TODO: do this in-memory?
+- name: Fetch server2's public ssh key
+  fetch: 
+    src: "/root/.ssh/id_rsa.pub"
+    dest: "buffer/{{ansible_hostname}}-id_rsa.pub"
+    flat: yes
+  when: "'server2' in inventory_hostname"
+
+- name: Add server2's public key to server1's authorized_keys file
+  authorized_key: 
+    user: root
+    state: present
+    key: "{{ lookup('file', 'buffer/{{item.dest}}-id_rsa.pub') }}"
+  when: "'server1' in inventory_hostname"
+  with_items: 
+    - { dest: "server2"}
+
+- name: Keyscan server1's host key 
+  shell: "ssh-keyscan -T10 -t rsa 10.0.0.2"
+  register: server1_hostkey
+  when: "'server1' not in inventory_hostname"
+
+- name: Add server1's host key to server2's known_hosts
+  lineinfile: name=/root/.ssh/known_hosts create=yes line={{ item }}
+  with_items: '{{ server1_hostkey.stdout_lines }}'
+  when: "'server1' not in inventory_hostname"

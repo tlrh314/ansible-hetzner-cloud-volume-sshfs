@@ -3,3 +3,8 @@
   service:
     name: "networking"
     state: restarted
+
+- name: Restart sshd
+  service:
+    name: "sshd"
+    state: restarted
