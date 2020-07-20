@@ -11,10 +11,9 @@
     before: ' ext4'
     regexp: '^(.+)$'
     replace: 'storage'
-  register: fstab_updated
   when: "'server1' in inventory_hostname"
 
-- name: Create /mnt/storage if it does not exist
+- name: Create /mnt/storage if it does not exist on server2
   file:
     path: "/mnt/storage"
     state: directory
@@ -23,15 +22,17 @@
     mode: 0755
   when: "'server1' not in inventory_hostname"
 
-- name: Add the sshfs mount of the volume to the fstab
+- name: Add the sshfs mount of the volume to the fstab on server2
   lineinfile:
     dest: /etc/fstab
     regexp: "^sshfs"
     line: "sshfs#server1:/mnt/storage /mnt/storage fuse defaults,nonempty,allow_other,reconnect,_netdev,users,ServerAliveInterval=15,ServerAliveCountMax=3 0 0"
     state: present
-  register: fstab_updated
   when: "'server1' not in inventory_hostname"
 
 - name: Reboot
   reboot:
-  when: fstab_updated is changed
+
+- name: Reboot
+  reboot:
+  when: "'server1' not in inventory_hostname"
