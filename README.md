@@ -65,3 +65,7 @@ Also see [hcloud README/Getting Started](https://github.com/hetznercloud/cli#get
 - Connect to server1: `ssh root@$(hcloud server ip server1) -i ~/.ssh/hcloud_sshfs_rsa -o StrictHostKeyChecking=no`
 - Connect to server2: `ssh root@$(hcloud server ip server2) -i ~/.ssh/hcloud_sshfs_rsa -o StrictHostKeyChecking=no`
 - Destroy the setup at Hetzner Cloud: `./create.sh -d`
+
+
+## References
+Part of the Ansible roles have been gleaned from Vito Botta's [ansible-bootstrap-role](https://github.com/vitobotta/ansible-bootstrap-role), specifically `Update system` and `Install essential packages` (though the latter is extensively modified).
