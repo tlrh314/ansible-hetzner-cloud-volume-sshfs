@@ -26,8 +26,10 @@ delete_network() {
 
 
 create_servers() {
-    hcloud server create --location nbg1 --ssh-key my-ssh-key --type cx11 --image debian-10 --network network --name server1
-    hcloud server create --location nbg1 --ssh-key my-ssh-key --type cx11 --image debian-10 --network network --name server2
+    hcloud server create --location nbg1 --ssh-key my-ssh-key --type cx11 --image debian-10 --name server1
+    hcloud server create --location nbg1 --ssh-key my-ssh-key --type cx11 --image debian-10 --name server2
+    hcloud server attach-to-network server1 --network network --ip 10.0.0.2
+    hcloud server attach-to-network server2 --network network --ip 10.0.0.3
 }
 delete_servers() {
     hcloud server delete server1 || true
