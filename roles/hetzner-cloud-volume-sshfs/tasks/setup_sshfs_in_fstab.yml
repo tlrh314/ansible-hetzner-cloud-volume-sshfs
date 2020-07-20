@@ -33,6 +33,25 @@
 - name: Reboot
   reboot:
 
+# TODO: volume did not seem mounted after first reboot, but was after additional reboot
 - name: Reboot
   reboot:
   when: "'server1' not in inventory_hostname"
+
+- name: Create /mnt/storage/test_server1
+  file:
+    path: "/mnt/storage/test_server1"
+    state: file 
+    owner: root
+    group: root
+    mode: 0644
+  when: "'server1' in inventory_hostname"
+
+- name: Create /mnt/storage/test_server2
+  file:
+    path: "/mnt/storage/test_server2"
+    state: file 
+    owner: root
+    group: root
+    mode: 0644
+  when: "'server2' in inventory_hostname"
