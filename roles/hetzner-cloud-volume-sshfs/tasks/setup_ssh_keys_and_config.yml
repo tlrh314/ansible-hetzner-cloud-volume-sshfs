@@ -5,7 +5,6 @@
     regexp: "^PermitRootLogin"
     line: "PermitRootLogin yes"
     state: present
-  notify: Restart sshd
 
 - name: Disallow password authentication
   lineinfile:
@@ -13,7 +12,6 @@
     regexp: "^PasswordAuthentication"
     line: "PasswordAuthentication no"
     state: present
-  notify: Restart sshd
 
 - name: Allow pubkey authentication
   lineinfile:
@@ -21,7 +19,6 @@
     regexp: "^PubkeyAuthentication"
     line: "PubkeyAuthentication yes"
     state: present
-  notify: Restart sshd
 
 - name: Restart sshd
   service:

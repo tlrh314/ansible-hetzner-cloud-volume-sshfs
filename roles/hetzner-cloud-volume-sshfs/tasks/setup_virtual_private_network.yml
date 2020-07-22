@@ -15,7 +15,6 @@
   template:
     src: 61-my-private-network.cfg.j2
     dest: /etc/network/interfaces.d/61-my-private-network.cfg
-  notify: Restart networking
 
 - name: Restart networking
   service:

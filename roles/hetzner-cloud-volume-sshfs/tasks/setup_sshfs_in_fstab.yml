@@ -30,28 +30,40 @@
     state: present
   when: "'server1' not in inventory_hostname"
 
-- name: Reboot
-  reboot:
-
-# TODO: volume did not seem mounted after first reboot, but was after additional reboot
-- name: Reboot
-  reboot:
-  when: "'server1' not in inventory_hostname"
-
-- name: Create /mnt/storage/test_server1
-  file:
-    path: "/mnt/storage/test_server1"
-    state: file 
-    owner: root
-    group: root
-    mode: 0644
+- name: Reboot server1 (which owns the volume)
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
   when: "'server1' in inventory_hostname"
 
-- name: Create /mnt/storage/test_server2
+- name: Wait for reboot of server1 to complete 
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: "'server1' in inventory_hostname"
+
+- name: Reboot the application servers
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+  when: "'server1' not in inventory_hostname"
+
+- name: Wait for reboot of server2 to complete 
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: "'server1' not in inventory_hostname"
+
+- name: Create /mnt/storage/test_{{ansible_hostname}}
   file:
-    path: "/mnt/storage/test_server2"
+    path: "/mnt/storage/test_{{ansible_hostname}}"
+    state: touch
+
+- name: Check that /mnt/storage/test_{{ansible_hostname}} exists
+  file:
+    path: "/mnt/storage/test_{{ansible_hostname}}"
     state: file 
-    owner: root
-    group: root
-    mode: 0644
-  when: "'server2' in inventory_hostname"
