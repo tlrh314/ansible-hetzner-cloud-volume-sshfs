@@ -1,6 +1,8 @@
 # ansible-hetzner-cloud-volume-sshfs
 This repository contains a `bash` script that creates/destroys a setup at Hetzner Cloud via the `hcloud` cli interface and an Ansible playbook to provision Hetzner Cloud Servers with a Hetzner Cloud Volume that is mounted on multiple servers via `sshfs` over the Hetzner Cloud Network. A tutorial for the [Hetzner Online Community](https://community.hetzner.com/tutorials) has been [submitted](https://github.com/hetzneronline/community-content/pull/250).
 
+![](https://github.com/tlrh314/ansible-hetzner-cloud-volume-sshfs/raw/master/sshfs_tutorial.gif)
+
 ## Dependencies
 
 - [Hetzner Cloud CLI](https://github.com/hetznercloud/cli)
